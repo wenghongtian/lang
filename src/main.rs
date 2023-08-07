@@ -1,5 +1,6 @@
 mod front;
 
 fn main() {
-    println!("Hello, world!");
+    let tokens = front::tokenlize("1+2.1").unwrap();
+    println!("{:#?}", tokens);
 }

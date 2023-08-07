@@ -12,3 +12,10 @@ pub fn is_op(c: &str) -> bool {
         _ => false,
     }
 }
+
+pub fn is_space(c: &str) -> bool {
+    match c {
+        " " | "\t" | "\r" | "\n" | "" => true,
+        _ => false,
+    }
+}
