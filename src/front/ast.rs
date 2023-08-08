@@ -25,19 +25,24 @@ impl Program {
 
 pub trait Expression: Statement {}
 
-struct BinaryExpression {
+pub fn as_statement(expr: &dyn Statement) -> &dyn Statement {
+    expr
+}
+
+pub struct BinaryExpression {
     left: Box<dyn Expression>,
     right: Box<dyn Expression>,
     operator: String,
 }
-impl Expression for BinaryExpression {}
+
 impl Statement for BinaryExpression {
     fn get_type(&self) -> NodeType {
         NodeType::BinaryExpression
     }
 }
+impl Expression for BinaryExpression {}
 impl BinaryExpression {
-    fn new(
+    pub fn new(
         left: Box<dyn Expression>,
         right: Box<dyn Expression>,
         operator: String,
@@ -49,3 +54,18 @@ impl BinaryExpression {
         }
     }
 }
+
+pub struct NumberLiteral {
+    value: f32,
+}
+impl NumberLiteral {
+    pub fn new(val: f32) -> NumberLiteral {
+        NumberLiteral { value: val }
+    }
+}
+impl Statement for NumberLiteral {
+    fn get_type(&self) -> NodeType {
+        NodeType::NumericLiteral
+    }
+}
+impl Expression for NumberLiteral {}

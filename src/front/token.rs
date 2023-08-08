@@ -18,7 +18,7 @@ pub enum TokenType {
 }
 
 #[derive(Debug)]
-enum TokenVal {
+pub enum TokenVal {
     Str(String),
     Number(f32),
 }
