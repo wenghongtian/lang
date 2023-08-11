@@ -76,10 +76,13 @@ impl Parser {
             // TokenType::Operator => todo!(),
             TokenType::OpenParen => {
                 self.eat();
-                self.parse_expression()
+                let expr = self.parse_expression();
+                _ = self.expected(
+                    TokenType::CloseParen,
+                    "Expected close paren to match open paren!",
+                );
+                return expr;
             }
-            // TokenType::CloseParen => todo!(),
-            // TokenType::Equal => todo!(),
             // TokenType::Dot => todo!(),
             TokenType::NumberLiteral => {
                 let token = self.eat();
@@ -89,17 +92,12 @@ impl Parser {
                     _ => Err(anyhow!("Unexpected val from token: {:?}", token)),
                 }
             }
-            // TokenType::Eof => todo!(),
             _ => Err(anyhow!(
                 "Unexpected token found during parsing! {:?}",
                 self.top()
             )),
         }
     }
-
-    // fn parse_primary_expression(&mut self) -> {
-
-    // }
 
     fn top(&mut self) -> Rc<Token> {
         let token = self.tokens[0].clone();
@@ -112,6 +110,13 @@ impl Parser {
         match self.top().t_type {
             TokenType::Eof => false,
             _ => true,
+        }
+    }
+    fn expected(&mut self, token_type: TokenType, err_msg: &str) -> Result<Rc<Token>> {
+        if token_type == self.top().t_type {
+            Ok(self.eat())
+        } else {
+            Err(anyhow!("{}", err_msg))
         }
     }
 }

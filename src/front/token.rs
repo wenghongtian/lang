@@ -3,7 +3,7 @@ use std::rc::Rc;
 
 use super::utils;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum TokenType {
     Identifier,
     Operator,
