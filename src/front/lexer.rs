@@ -50,7 +50,7 @@ impl Parser {
                 _ => (),
             }
         }
-        Err(anyhow!("Invalid Expression!"))
+        Ok(left)
     }
 
     fn parse_multiplicitave_expression(&mut self) -> Result<Box<dyn Expression>> {

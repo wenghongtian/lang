@@ -1,3 +1,5 @@
+use std::any::Any;
+
 pub enum NodeType {
     Program,
     ExpressionStatement,
@@ -7,6 +9,7 @@ pub enum NodeType {
 
 pub trait Statement {
     fn get_type(&self) -> NodeType;
+    fn as_any(&self) -> &dyn Any;
 }
 
 pub struct Program {
@@ -15,6 +18,10 @@ pub struct Program {
 impl Statement for Program {
     fn get_type(&self) -> NodeType {
         NodeType::Program
+    }
+
+    fn as_any(&self) -> &dyn Any {
+        self
     }
 }
 impl Program {
@@ -25,19 +32,19 @@ impl Program {
 
 pub trait Expression: Statement {}
 
-pub fn as_statement(expr: &dyn Statement) -> &dyn Statement {
-    expr
-}
-
 pub struct BinaryExpression {
-    left: Box<dyn Expression>,
-    right: Box<dyn Expression>,
-    operator: String,
+    pub left: Box<dyn Expression>,
+    pub right: Box<dyn Expression>,
+    pub operator: String,
 }
 
 impl Statement for BinaryExpression {
     fn get_type(&self) -> NodeType {
         NodeType::BinaryExpression
+    }
+
+    fn as_any(&self) -> &dyn Any {
+        self
     }
 }
 impl Expression for BinaryExpression {}
@@ -56,7 +63,7 @@ impl BinaryExpression {
 }
 
 pub struct NumberLiteral {
-    value: f32,
+    pub value: f32,
 }
 impl NumberLiteral {
     pub fn new(val: f32) -> NumberLiteral {
@@ -66,6 +73,10 @@ impl NumberLiteral {
 impl Statement for NumberLiteral {
     fn get_type(&self) -> NodeType {
         NodeType::NumericLiteral
+    }
+
+    fn as_any(&self) -> &dyn Any {
+        self
     }
 }
 impl Expression for NumberLiteral {}
